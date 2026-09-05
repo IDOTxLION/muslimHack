@@ -6,13 +6,17 @@ Business model: pay-to-post listings + transaction fees. We provide background c
 
 ## Stack
 - **Next.js 16.3.4** (App Router, Turbopack) + **React 19** + **TypeScript** + **Tailwind 4**
-- **Prisma 6.19.3** ORM → **SQLite** locally (schema is Postgres-compatible for prod)
+- **Prisma 7.10.0** ORM (driver adapter `@prisma/adapter-better-sqlite3`) → **SQLite**
+  locally (schema is Postgres-compatible for prod)
 - **jose** (JWT session cookies) + **bcryptjs** (password hashing) + **zod** (validation)
 - Full-stack Next.js — no separate backend server.
 
 > ⚠️ This is a bleeding-edge Next.js 16. Middleware is renamed to **Proxy** (`src/proxy.ts`).
-> Read `node_modules/next/dist/docs/` before using framework APIs. Prisma was pinned to
-> stable 6.19.3 (install auto-resolved to an unusable Prisma 8-rc — do not upgrade).
+> Read `node_modules/next/dist/docs/` before using framework APIs. Prisma is pinned to
+> **7.10.0** — do NOT upgrade (8.x is still rc). Prisma 7's `prisma-client` generator
+> emits **TypeScript** to `generated/prisma` (gitignored); config lives in
+> `prisma7.config.ts` (not `package.json`). The DB is managed with `prisma db push`
+> (no migrations dir).
 
 ## Auth model
 Single login flow, three roles on one `User` table: `investor | business | admin`.
@@ -24,8 +28,10 @@ Single login flow, three roles on one `User` table: `investor | business | admin
 
 ## Key files
 - `prisma/schema.prisma` — models: User, Business, FinancialProfile, Investment
-- `prisma/seed.mjs` — demo data (`npm run db:seed`)
-- `src/lib/db.ts` — Prisma client singleton
+- `prisma7.config.ts` — Prisma 7 config (schema path, datasource url)
+- `prisma/seed.ts` — demo data (`npm run db:seed`; run via Node TS type-stripping)
+- `generated/prisma/` — generated Prisma client (gitignored; run `prisma generate`)
+- `src/lib/db.ts` — Prisma client singleton (better-sqlite3 adapter)
 - `src/lib/definitions.ts` — roles, statuses, zod schemas, SessionPayload
 - `src/lib/session.ts` — encrypt/decrypt/create/deleteSession
 - `src/lib/password.ts` — hash/verify
@@ -54,9 +60,10 @@ Only `verified`/`live` businesses appear in public listings and accept investmen
 ```
 npm run dev            # start dev server
 npm run build          # production build
+npm run db:push        # sync schema to SQLite (prisma db push)
 npm run db:seed        # seed demo data
-npm run db:reset       # reset DB + re-run migrations (then re-seed)
-npx prisma migrate dev --name <name>   # new migration after schema change
+npm run db:reset       # drop + re-push schema (then re-run db:seed)
+npx prisma generate    # regenerate client after schema change
 ```
 
 ## Seeded logins (password: `Password123`)
@@ -65,12 +72,14 @@ npx prisma migrate dev --name <name>   # new migration after schema change
 - investor → investor@amalfund.test
 
 ## Env (`.env`, gitignored — see `.env.example`)
-- `DATABASE_URL="file:./dev.db"`
 - `SESSION_SECRET="..."` (generate with `openssl rand -base64 32`; current value is dev-only)
+- DB URL is set in `prisma7.config.ts` (`file:./dev.db`), not via env. `DATABASE_URL`
+  is kept in `.env.example` for the future Postgres switch.
 
 ## Status
 Backend + auth complete and verified (typecheck, lint, build pass; access-control tested).
-Committed on branch **`feat/backend-auth`**.
+Migrated to **Prisma 7.10.0** (better-sqlite3 adapter, `db push`) to align with `main`.
+On branch **`feat/backend-auth`**.
 
 ## Suggested next steps (not yet built)
 - Create-business form (Server Action) on the business dashboard

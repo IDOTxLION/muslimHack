@@ -37,6 +37,12 @@ yarn-error.log*
 # local SQLite database (Prisma dev)
 /prisma/*.db
 /prisma/*.db-journal
+/dev.db
+/dev.db-journal
+*.db
+
+# generated Prisma client (run `prisma generate`)
+/generated
 
 # vercel
 .vercel
