@@ -174,9 +174,9 @@ export default function Home() {
           </ul>
 
           <div className="hidden md:flex items-center gap-3">
-            <a href="#" style={{ color: '#DDE8E2', fontSize: 14, fontWeight: 500, textDecoration: 'none' }}>Sign In</a>
+            <a href="/login" style={{ color: '#DDE8E2', fontSize: 14, fontWeight: 500, textDecoration: 'none' }}>Sign In</a>
             <a
-              href="#"
+              href="/signup"
               className="transition-colors"
               style={{ backgroundColor: '#D86F52', color: 'white', fontSize: 14, fontWeight: 600, padding: '8px 18px', borderRadius: 10, textDecoration: 'none' }}
             >

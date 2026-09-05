@@ -1,0 +1,87 @@
+// Prisma schema for Amal Fund.
+// Provider is SQLite for fast local dev. To move to Postgres for production,
+// change `provider` to "postgresql" and DATABASE_URL to a Postgres connection
+// string — the models below are written to be Postgres-compatible.
+// Note: roles/status are stored as String (SQLite has no native enums); values
+// are constrained at the application layer via zod (see src/lib/definitions.ts).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         String   @default("investor") // investor | business | admin
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // A user with role "business" owns one or more Businesses.
+  businesses  Business[]
+  // A user with role "investor" makes Investments.
+  investments Investment[]
+
+  @@index([role])
+}
+
+model Business {
+  id            String   @id @default(cuid())
+  ownerId       String
+  owner         User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  name          String
+  tagline       String
+  description    String
+  location      String
+  category      String
+  imageUrl      String?
+  fundingTarget Int // in whole currency units (e.g. GBP)
+  equityOffered Float // percentage, e.g. 12.0
+  deadline      DateTime?
+  // verification workflow controlled by the company/admin:
+  // pending | verified | live | funded | rejected
+  status        String   @default("pending")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  financialProfile FinancialProfile?
+  investments      Investment[]
+
+  @@index([ownerId])
+  @@index([status])
+}
+
+// Sensitive financial data. Access is gated in the Data Access Layer + DTOs:
+// only the owning business user and admins may read the full record.
+model FinancialProfile {
+  id               String   @id @default(cuid())
+  businessId       String   @unique
+  business         Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  annualRevenue    Int?
+  netProfit        Int?
+  monthlyBurn      Int?
+  outstandingDebt  Int?
+  notes            String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model Investment {
+  id         String   @id @default(cuid())
+  investorId String
+  investor   User     @relation(fields: [investorId], references: [id], onDelete: Cascade)
+  businessId String
+  business   Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  amount     Int
+  equityPct  Float
+  createdAt  DateTime @default(now())
+
+  @@index([investorId])
+  @@index([businessId])
+}
