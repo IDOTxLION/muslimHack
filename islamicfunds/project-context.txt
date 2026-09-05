@@ -1,0 +1,21 @@
+Problem: funding small and medium Muslim businesses 
+Solution: crowdfunding with share/stake in the business
+What we provide: background check, financial analyst services(EXTRA)
+
+roadblocks:
+finding ways to prevent fraud
+legal team presence (How to incorporate this in hackathon?)
+
+Business and investor contract between each other, this is not our current responsibility
+
+Research on legal risk (figure out if our plan, assuming no fraudulent behavior, is even legal)
+
+Business model:
+Pay to post your business
+Fees on transaction
+
+extras in future
+
+--
+How are we different?
+We are working with smaller companies
