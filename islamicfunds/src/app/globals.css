@@ -1,26 +1,61 @@
-@import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import 'tailwindcss';
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+  --radius-default: var(--radius);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  --background: #F8F4EC;
+  --foreground: #202927;
+  --card: #FFFFFF;
+  --card-foreground: #202927;
+  --primary: #D86F52;
+  --primary-foreground: #FFFFFF;
+  --secondary: #DDE8E2;
+  --secondary-foreground: #202927;
+  --muted: #EEE9DF;
+  --muted-foreground: #5C6B64;
+  --accent: #123E3A;
+  --accent-foreground: #F8F4EC;
+  --border: #D4CEBE;
+  --ring: #D86F52;
+  --radius: 10px;
+}
+
+html, body, #root {
+  height: 100%;
 }
 
 body {
-  background: var(--background);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Hide scrollbar by default, show on hover/scroll */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+*:hover {
+  scrollbar-color: var(--border) transparent;
 }
