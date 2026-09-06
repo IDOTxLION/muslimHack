@@ -19,6 +19,9 @@ const CreateBusinessSchema = z.object({
   imageUrl: z.url().optional(),
   fundingTarget: z.number().int().positive(),
   equityOffered: z.number().positive().max(100),
+  verificationNotes: z.string().min(10, {
+    error: "Please upload a verification document with at least some detail.",
+  }),
 });
 
 // POST /api/businesses — create a new listing. Business role only.

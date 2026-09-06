@@ -159,7 +159,7 @@ export function LandingPage({ auth }: { auth: LandingAuth }) {
             <div className="flex items-center justify-center rounded-md" style={{ width: 28, height: 28, backgroundColor: 'var(--primary)' }}>
               <span style={{ color: 'white', fontSize: 11, fontWeight: 800 }}>A</span>
             </div>
-            <span style={{ color: 'var(--accent-foreground)', fontWeight: 700, fontSize: 18, letterSpacing: '-0.02em' }}>Amal Fund</span>
+            <span style={{ color: 'var(--accent-foreground)', fontWeight: 700, fontSize: 18, letterSpacing: '-0.02em' }}>Asaan Fund</span>
           </div>
 
           <ul className="hidden md:flex items-center gap-8">
@@ -250,7 +250,7 @@ export function LandingPage({ auth }: { auth: LandingAuth }) {
               <span style={{ color: 'var(--primary)' }}>Share in their success.</span>
             </h1>
             <p style={{ color: 'var(--secondary)', fontSize: 18, lineHeight: 1.65, marginBottom: 40, maxWidth: 520 }}>
-              Amal Fund connects investors with verified Muslim-owned SMEs seeking equity crowdfunding. No interest. No ambiguity. Just genuine partnership.
+              Asaan Fund connects investors with verified Muslim-owned SMEs seeking equity crowdfunding. No interest. No ambiguity. Just genuine partnership.
             </p>
             <div className="flex flex-wrap gap-4">
               <a href="#" style={{ backgroundColor: 'var(--primary)', color: 'var(--primary-foreground)', fontWeight: 600, padding: '14px 28px', borderRadius: 10, fontSize: 14, textDecoration: 'none' }}>
@@ -399,7 +399,7 @@ export function LandingPage({ auth }: { auth: LandingAuth }) {
       <section style={{ paddingTop: 96, paddingBottom: 96, paddingLeft: 24, paddingRight: 24 }}>
         <div className="max-w-6xl mx-auto">
           <div style={{ marginBottom: 48 }}>
-            <p style={{ color: 'var(--primary)', fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 12 }}>Why Amal Fund</p>
+            <p style={{ color: 'var(--primary)', fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 12 }}>Why Asaan Fund</p>
             <h2 style={{ fontSize: 36, fontWeight: 800, color: 'var(--foreground)', letterSpacing: '-0.03em', maxWidth: 480 }}>
               Built on trust, transparency, and Islamic principles
             </h2>
@@ -450,7 +450,7 @@ export function LandingPage({ auth }: { auth: LandingAuth }) {
                 <div className="flex items-center justify-center rounded-md" style={{ width: 24, height: 24, backgroundColor: 'var(--primary)' }}>
                   <span style={{ color: 'white', fontSize: 10, fontWeight: 800 }}>A</span>
                 </div>
-                <span style={{ color: 'var(--accent-foreground)', fontWeight: 700, fontSize: 15 }}>Amal Fund</span>
+                <span style={{ color: 'var(--accent-foreground)', fontWeight: 700, fontSize: 15 }}>Asaan Fund</span>
               </div>
               <p style={{ color: 'rgba(221,232,226,0.65)', fontSize: 13, lineHeight: 1.6 }}>
                 Halal equity crowdfunding for Muslim-owned small and medium businesses.
@@ -474,7 +474,7 @@ export function LandingPage({ auth }: { auth: LandingAuth }) {
             ))}
           </div>
           <div className="flex flex-col md:flex-row items-center justify-between gap-3" style={{ borderTop: '1px solid rgba(221,232,226,0.10)', paddingTop: 24 }}>
-            <p style={{ color: 'rgba(221,232,226,0.45)', fontSize: 12 }}>© 2026 Amal Fund. All rights reserved.</p>
+            <p style={{ color: 'rgba(221,232,226,0.45)', fontSize: 12 }}>© 2026 Asaan Fund. All rights reserved.</p>
             <p style={{ color: 'rgba(221,232,226,0.45)', fontSize: 12 }}>Investments involve risk. Capital at risk. Not financial advice.</p>
           </div>
         </div>
