@@ -149,12 +149,9 @@ export function LandingPage({ auth, businesses }: { auth: LandingAuth; businesse
 
       {/* NAV */}
       <header style={{ backgroundColor: 'var(--accent)', position: 'sticky', top: 0, zIndex: 50 }}>
-        <nav className="max-w-6xl mx-auto px-6 flex items-center justify-between" style={{ height: 64 }}>
+        <nav className="max-w-6xl mx-auto px-6 flex items-center justify-between" style={{ minHeight: 140 }}>
           <div className="flex items-center gap-2">
-            <div className="flex items-center justify-center rounded-md" style={{ width: 28, height: 28, backgroundColor: 'var(--primary)' }}>
-              <span style={{ color: 'white', fontSize: 11, fontWeight: 800 }}>A</span>
-            </div>
-            <span style={{ color: 'var(--accent-foreground)', fontWeight: 700, fontSize: 18, letterSpacing: '-0.02em' }}>Asaan Fund</span>
+            <img src="/logo/gold-logo.png" alt="Asaan Fund" style={{ height: 140, width: 'auto', display: 'block' }} />
           </div>
 
           <ul className="hidden md:flex items-center gap-8">
@@ -477,10 +474,7 @@ export function LandingPage({ auth, businesses }: { auth: LandingAuth; businesse
           <div className="grid grid-cols-1 md:grid-cols-5 gap-10 pb-12 border-b border-neutral-900">
             <div className="md:col-span-2 pr-0 md:pr-8">
               <div className="flex items-center gap-2 mb-4">
-                <div className="w-6 h-6 flex items-center justify-center rounded-md bg-primary">
-                  <span className="text-black text-xs font-black">A</span>
-                </div>
-                <span className="text-white font-bold text-base tracking-tight">Asaan Fund</span>
+                <img src="/logo/gold-logo.png" alt="Asaan Fund" style={{ height: 130, width: 'auto', display: 'block' }} />
               </div>
               <p className="text-neutral-400 text-xs leading-relaxed max-w-sm">
                 Halal equity crowdfunding for Muslim-owned small and medium businesses. Connecting ethical capital with growing ventures.

@@ -24,15 +24,7 @@ export function AuthShell({
           className="flex items-center gap-2 justify-center mb-8"
           style={{ textDecoration: "none" }}
         >
-          <div
-            className="flex items-center justify-center rounded-md"
-            style={{ width: 28, height: 28, backgroundColor: "#D86F52" }}
-          >
-            <span style={{ color: "white", fontSize: 11, fontWeight: 800 }}>A</span>
-          </div>
-          <span style={{ color: "#123E3A", fontWeight: 700, fontSize: 18 }}>
-            Asaan Fund
-          </span>
+          <img src="/logo/gold-logo.png" alt="Asaan Fund" style={{ height: 156, width: "auto", display: "block" }} />
         </Link>
 
         <div

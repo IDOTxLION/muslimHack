@@ -13,16 +13,10 @@ export function DashboardHeader({ name, role }: { name: string; role: Role }) {
     <header style={{ backgroundColor: "var(--accent)", position: "sticky", top: 0, zIndex: 50 }}>
       <nav
         className="max-w-6xl mx-auto px-6 flex items-center justify-between"
-        style={{ height: 64 }}
+        style={{ minHeight: 140 }}
       >
         <Link href="/" className="flex items-center gap-2" style={{ textDecoration: "none" }}>
-          <div
-            className="flex items-center justify-center rounded-md"
-            style={{ width: 28, height: 28, backgroundColor: "var(--primary)" }}
-          >
-            <span style={{ color: "white", fontSize: 11, fontWeight: 800 }}>A</span>
-          </div>
-          <span style={{ color: "var(--accent-foreground)", fontWeight: 700, fontSize: 18 }}>Asaan Fund</span>
+          <img src="/logo/gold-logo.png" alt="Asaan Fund" style={{ height: 140, width: "auto", display: "block" }} />
         </Link>
 
         <div className="flex items-center gap-4">
