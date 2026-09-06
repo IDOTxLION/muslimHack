@@ -99,7 +99,7 @@ async function main() {
       name: "Baraka Bakehouse",
       tagline: "Artisan halal bakery expanding to a second location.",
       description:
-        "An artisan halal bakery in Toronto expanding to a second location in the city centre.",
+        "Baraka Bakehouse is a family-run halal bakery in Toronto, lovingly carrying forward a store inherited from the founder's late father. His recipes, values, and dedication to serving the community continue to inspire every loaf and pastry. The business is seeking MURABAHA FUNDING to purchase a commercial refrigerator, which will increase storage capacity, reduce food waste, and help the bakery prepare for its second location.",
       location: "Toronto, ON",
       category: "Food & Hospitality",
       imageUrl:
@@ -127,7 +127,7 @@ async function main() {
       name: "Nour Tech Solutions",
       tagline: "SaaS helping mosques manage memberships and events.",
       description:
-        "SaaS platform helping small mosques manage memberships and community events.",
+        "Nour Tech Solutions is an early-stage SaaS business helping small mosques manage memberships and community events. The company is already profitable, has growing recurring revenue, and is ready to hire its first employees to support customers and accelerate product development. It is seeking MUSHARAKAH funding in exchange for 8% of the business, allowing investors to share in the company's future growth and risk.",
       location: "Vancouver, BC",
       category: "Technology",
       imageUrl:
@@ -140,10 +140,10 @@ async function main() {
       financialProfile: {
         create: {
           annualRevenue: 95000,
-          netProfit: -12000,
+          netProfit: 12000,
           monthlyBurn: 14000,
           outstandingDebt: 0,
-          notes: "Pre-profit, strong MRR growth (18% MoM).",
+          notes: "Early-stage and profitable, with strong MRR growth (18% MoM); funding will support the first hires.",
         },
       },
     },
