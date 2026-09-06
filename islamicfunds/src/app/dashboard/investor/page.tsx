@@ -52,11 +52,19 @@ export default async function InvestorDashboard() {
                 className="flex justify-between"
                 style={{ fontSize: 12, color: "var(--muted-foreground)", marginTop: 8 }}
               >
-                <span>£{b.raised.toLocaleString()} raised</span>
-                <span>{b.percentFunded}% of £{b.fundingTarget.toLocaleString()}</span>
+                <span>${b.raised.toLocaleString()} raised</span>
+                <span>{b.percentFunded}% of ${b.fundingTarget.toLocaleString()}</span>
               </div>
-              <div style={{ fontSize: 11, color: "var(--muted-foreground)", marginTop: 6 }}>
-                {b.investorCount} investors · {b.equityOffered}% equity
+              <div className="flex justify-between items-center" style={{ marginTop: 12 }}>
+                <div style={{ fontSize: 11, color: "#5C6B64" }}>
+                  {b.investorCount} investors · {b.equityOffered}% equity
+                </div>
+                <a
+                  href={`/invest/${b.id}`}
+                  style={{ backgroundColor: "#D86F52", color: "white", fontSize: 12, fontWeight: 600, padding: "7px 16px", borderRadius: 8, textDecoration: "none" }}
+                >
+                  Invest Now
+                </a>
               </div>
             </div>
           ))}

@@ -25,15 +25,15 @@
   --foreground: #0c0c0c;
   --card: #FFFFFF;
   --card-foreground: #0a231e;
-  --primary: #D4AF37;
+  --primary: #C9A94E;
   --primary-foreground: #FFFFFF;
-  --secondary: #DDE8E2;
+  --secondary: rgba(255, 255, 255, 0.7);
   --secondary-foreground: #060606;
   --muted: #EEE9DF;
-  --muted-foreground: #5C6B64;
+  --muted-foreground: #3E4C46;
   --accent: #000000;
   --accent-foreground: #F8F4EC;
-  --border: #D4CEBE;
+  --border: rgba(255, 255, 255, 0.15);
   --ring: #7e6719;
   --destructive: #B23B2E;
   --radius: 10px;
@@ -53,6 +53,10 @@ html, body, #root {
   height: 100%;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: 'Plus Jakarta Sans', sans-serif;
   background-color: var(--background);
@@ -68,6 +72,35 @@ body {
 
 .tabular-nums {
   font-variant-numeric: tabular-nums;
+}
+
+.admin-summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--foreground);
+  list-style: none;
+}
+
+.admin-summary::-webkit-details-marker {
+  display: none;
+}
+
+.admin-caret {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid var(--foreground);
+  transition: transform 0.15s ease;
+}
+
+details[open] > summary .admin-caret {
+  transform: rotate(180deg);
 }
 
 /* Hide scrollbar by default, show on hover/scroll */

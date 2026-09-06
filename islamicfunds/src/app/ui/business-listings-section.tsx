@@ -72,8 +72,8 @@ export function BusinessListingsSection({
             </p>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4" style={{ marginTop: 16 }}>
-              <Stat label="Target" value={`£${business.fundingTarget.toLocaleString()}`} />
-              <Stat label="Raised" value={`£${raised.toLocaleString()}`} />
+              <Stat label="Target" value={`$${business.fundingTarget.toLocaleString()}`} />
+              <Stat label="Raised" value={`$${raised.toLocaleString()}`} />
               <Stat label="Equity offered" value={`${business.equityOffered}%`} />
               <Stat label="Investors" value={`${business.investments.length}`} />
             </div>
@@ -163,5 +163,5 @@ function Stat({ label, value }: { label: string; value: string }) {
 }
 
 function money(value: number | null): string {
-  return value == null ? "—" : `£${value.toLocaleString()}`;
+  return value == null ? "—" : `$${value.toLocaleString()}`;
 }

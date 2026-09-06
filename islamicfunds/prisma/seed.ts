@@ -20,7 +20,7 @@ async function main() {
   const admin = await db.user.create({
     data: {
       name: "Amal Fund Team",
-      email: "admin@amalfund.test",
+      email: "admin@asaanfund.test",
       passwordHash,
       role: "admin",
     },
@@ -30,7 +30,7 @@ async function main() {
   const baraka = await db.user.create({
     data: {
       name: "Baraka Bakehouse",
-      email: "baraka@amalfund.test",
+      email: "baraka@asaanfund.test",
       passwordHash,
       role: "business",
     },
@@ -39,17 +39,54 @@ async function main() {
   const nour = await db.user.create({
     data: {
       name: "Nour Tech Solutions",
-      email: "nour@amalfund.test",
+      email: "nour@asaanfund.test",
       passwordHash,
       role: "business",
     },
   });
 
   // --- Investor ---
-  const investor = await db.user.create({
+  await db.user.create({
     data: {
       name: "Aisha Rahman",
-      email: "investor@amalfund.test",
+      email: "investor@asaanfund.test",
+      passwordHash,
+      role: "investor",
+    },
+  });
+
+  // --- Team investor accounts ---
+  const mikael = await db.user.create({
+    data: {
+      name: "Mikael Hasan Kizilbash",
+      email: "mikael@asaanfund.test",
+      passwordHash,
+      role: "investor",
+    },
+  });
+
+  const ali = await db.user.create({
+    data: {
+      name: "Ali Haider",
+      email: "ali@asaanfund.test",
+      passwordHash,
+      role: "investor",
+    },
+  });
+
+  const aaleen = await db.user.create({
+    data: {
+      name: "Aaleen Abbas Syed",
+      email: "aaleen@asaanfund.test",
+      passwordHash,
+      role: "investor",
+    },
+  });
+
+  const goher = await db.user.create({
+    data: {
+      name: "Goher Ali Syed",
+      email: "goher@asaanfund.test",
       passwordHash,
       role: "investor",
     },
@@ -62,14 +99,16 @@ async function main() {
       name: "Baraka Bakehouse",
       tagline: "Artisan halal bakery expanding to a second location.",
       description:
-        "An artisan halal bakery in Birmingham expanding to a second location in the city centre.",
-      location: "Birmingham, UK",
+        "An artisan halal bakery in Toronto expanding to a second location in the city centre.",
+      location: "Toronto, ON",
       category: "Food & Hospitality",
       imageUrl:
         "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&h=400&fit=crop&auto=format",
       fundingTarget: 40000,
       equityOffered: 12,
       status: "live",
+      verificationNotes:
+        "Business Number: 738291645 RC0001\nRegistered Address: 245 Carlaw Avenue, Toronto, ON, M4M 2S1\nOwner: Amina Farouk\nHalal Certification: Certified by the Halal Monitoring Authority (Ref: HMA-2022-3317)\nTrading since: January 2022\nSubmitted for review: approved by admin.",
       financialProfile: {
         create: {
           annualRevenue: 180000,
@@ -89,13 +128,15 @@ async function main() {
       tagline: "SaaS helping mosques manage memberships and events.",
       description:
         "SaaS platform helping small mosques manage memberships and community events.",
-      location: "London, UK",
+      location: "Vancouver, BC",
       category: "Technology",
       imageUrl:
         "https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=600&h=400&fit=crop&auto=format",
       fundingTarget: 80000,
       equityOffered: 8,
       status: "verified",
+      verificationNotes:
+        "Business Number: 592817364 RC0001\nRegistered Address: 1055 West Georgia Street, Vancouver, BC, V6E 3P3\nOwner: Nour Khaled\nGST/HST Number: 592817364 RT0001\nTrading since: August 2023\nSubmitted for review: approved by admin.",
       financialProfile: {
         create: {
           annualRevenue: 95000,
@@ -116,27 +157,41 @@ async function main() {
       tagline: "Ethical modest fashion for everyday wardrobes.",
       description:
         "Ethical modest fashion brand bringing premium quality to everyday Muslim wardrobes.",
-      location: "Manchester, UK",
+      location: "Montreal, QC",
       category: "Fashion & Retail",
+      imageUrl:
+        "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=600&h=400&fit=crop&auto=format",
       fundingTarget: 35000,
       equityOffered: 15,
       status: "pending",
+      verificationNotes:
+        "Business Number: 461738295 RC0001\nRegistered Address: 4200 Rue Saint-Denis, Montreal, QC, H2J 2K9\nOwner: Layla Ahmadi\nTrading since: May 2024\nSubmitted for review: pending admin approval.",
     },
   });
 
-  // --- Investments ---
+  // --- Team demo investments ---
   await db.investment.createMany({
     data: [
-      { investorId: investor.id, businessId: barakaBiz.id, amount: 5000, equityPct: 1.5 },
-      { investorId: investor.id, businessId: nourBiz.id, amount: 8000, equityPct: 0.8 },
+      { investorId: mikael.id, businessId: barakaBiz.id, amount: 1500, equityPct: 0.45 },
+      { investorId: mikael.id, businessId: nourBiz.id, amount: 2500, equityPct: 0.25 },
+      { investorId: ali.id, businessId: barakaBiz.id, amount: 2000, equityPct: 0.6 },
+      { investorId: ali.id, businessId: nourBiz.id, amount: 3000, equityPct: 0.3 },
+      { investorId: aaleen.id, businessId: barakaBiz.id, amount: 2500, equityPct: 0.75 },
+      { investorId: aaleen.id, businessId: nourBiz.id, amount: 3500, equityPct: 0.35 },
+      { investorId: goher.id, businessId: barakaBiz.id, amount: 3000, equityPct: 0.9 },
+      { investorId: goher.id, businessId: nourBiz.id, amount: 4000, equityPct: 0.4 },
     ],
   });
 
   console.log("Seed complete.");
   console.log("Login with these accounts (password: %s):", PASSWORD);
-  console.log("  admin    -> admin@amalfund.test");
-  console.log("  business -> baraka@amalfund.test / nour@amalfund.test");
-  console.log("  investor -> investor@amalfund.test");
+  console.log("  admin    -> admin@asaanfund.test");
+  console.log("  business -> baraka@asaanfund.test / nour@asaanfund.test");
+  console.log("  investor -> investor@asaanfund.test");
+  console.log("  investor -> mikael@asaanfund.test (Mikael Hasan Kizilbash)");
+  console.log("  investor -> ali@asaanfund.test (Ali Haider)");
+  console.log("  investor -> aaleen@asaanfund.test (Aaleen Abbas Syed)");
+  console.log("  investor -> goher@asaanfund.test (Goher Ali Syed)");
   void admin;
 }
 

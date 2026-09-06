@@ -8,8 +8,11 @@ export default async function AdminDashboard() {
   await requireRole("admin");
   const user = await getCurrentUser();
 
-  const [userCount, businesses, investmentAgg] = await Promise.all([
-    db.user.count(),
+  const [users, businesses, investmentAgg] = await Promise.all([
+    db.user.findMany({
+      orderBy: { createdAt: "desc" },
+      select: { id: true, name: true, email: true, role: true, createdAt: true },
+    }),
     db.business.findMany({
       orderBy: { createdAt: "desc" },
       include: {
@@ -34,24 +37,27 @@ export default async function AdminDashboard() {
       </p>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4" style={{ marginBottom: 32 }}>
-        <MetricCard label="Total users" value={`${userCount}`} />
+        <MetricCard label="Total users" value={`${users.length}`} />
         <MetricCard label="Businesses" value={`${businesses.length}`} />
         <MetricCard label="Awaiting review" value={`${pending}`} />
-        <MetricCard label="Total funded" value={`£${totalFunded.toLocaleString()}`} />
+        <MetricCard label="Total funded" value={`$${totalFunded.toLocaleString()}`} />
       </div>
 
-      <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 12 }}>
-        All businesses
-      </h2>
-      <div
-        style={{
-          backgroundColor: "var(--card)",
-          border: "1px solid var(--border)",
-          borderRadius: 12,
-          overflow: "hidden",
-        }}
-      >
-        <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+      <details open style={{ marginBottom: 24 }}>
+        <summary className="admin-summary">
+          <span className="admin-caret" />
+          All businesses
+        </summary>
+        <div
+          style={{
+            backgroundColor: "var(--card)",
+            border: "1px solid var(--border)",
+            borderRadius: 12,
+            overflow: "hidden",
+            marginTop: 12,
+          }}
+        >
+          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
           <thead>
             <tr style={{ backgroundColor: "var(--muted)", textAlign: "left" }}>
               <Th>Business</Th>
@@ -105,23 +111,61 @@ export default async function AdminDashboard() {
                       </div>
                     )}
                   </Td>
-                  <Td>£{b.fundingTarget.toLocaleString()}</Td>
-                  <Td>£{raised.toLocaleString()}</Td>
+                  <Td>${b.fundingTarget.toLocaleString()}</Td>
+                  <Td>${raised.toLocaleString()}</Td>
                   <Td>
                     {b.financialProfile?.annualRevenue != null
-                      ? `£${b.financialProfile.annualRevenue.toLocaleString()}`
+                      ? `$${b.financialProfile.annualRevenue.toLocaleString()}`
                       : "—"}
                   </Td>
                 </tr>
               );
             })}
           </tbody>
-        </table>
-      </div>
-      <p style={{ fontSize: 11, color: "var(--muted-foreground)", marginTop: 10 }}>
-        * Admins can view private financial data as part of the verification
-        process; investors never see these figures.
-      </p>
+          </table>
+        </div>
+        <p style={{ fontSize: 11, color: "var(--muted-foreground)", marginTop: 10 }}>
+          * Admins can view private financial data as part of the verification
+          process; investors never see these figures.
+        </p>
+      </details>
+
+      <details>
+        <summary className="admin-summary">
+          <span className="admin-caret" />
+          All users
+        </summary>
+        <div
+          style={{
+            backgroundColor: "var(--card)",
+            border: "1px solid var(--border)",
+            borderRadius: 12,
+            overflow: "hidden",
+            marginTop: 12,
+          }}
+        >
+          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+            <thead>
+              <tr style={{ backgroundColor: "var(--muted)", textAlign: "left" }}>
+                <Th>Name</Th>
+                <Th>Email</Th>
+                <Th>Role</Th>
+                <Th>Joined</Th>
+              </tr>
+            </thead>
+            <tbody>
+              {users.map((u) => (
+                <tr key={u.id} style={{ borderTop: "1px solid var(--muted)" }}>
+                  <Td>{u.name}</Td>
+                  <Td>{u.email}</Td>
+                  <Td style={{ textTransform: "capitalize" }}>{u.role}</Td>
+                  <Td>{u.createdAt.toLocaleDateString()}</Td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </details>
     </DashboardShell>
   );
 }
@@ -150,6 +194,6 @@ function Th({ children }: { children: React.ReactNode }) {
   );
 }
 
-function Td({ children }: { children: React.ReactNode }) {
-  return <td style={{ padding: "10px 14px", verticalAlign: "top" }}>{children}</td>;
+function Td({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) {
+  return <td style={{ padding: "10px 14px", verticalAlign: "top", ...style }}>{children}</td>;
 }

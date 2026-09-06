@@ -5,7 +5,14 @@ import { SignupForm } from "@/app/ui/signup-form";
 
 export const metadata: Metadata = { title: "Create account · Asaan Fund" };
 
-export default function SignupPage() {
+export default async function SignupPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ role?: string }>;
+}) {
+  const { role } = await searchParams;
+  const initialRole = role === "business" ? "business" : "investor";
+
   return (
     <AuthShell
       title="Create your account"
@@ -19,7 +26,7 @@ export default function SignupPage() {
         </>
       }
     >
-      <SignupForm />
+      <SignupForm initialRole={initialRole} />
     </AuthShell>
   );
 }

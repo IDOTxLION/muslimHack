@@ -1,13 +1,34 @@
 "use client";
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { Button } from '@/components/ui/button'
 
 export type LandingAuth = { name: string; dashboardPath: string } | null
 
-const NAV_LINKS = ['How It Works', 'Businesses', 'For Investors', 'About']
+type BusinessSummary = {
+  id: string;
+  name: string;
+  tagline: string;
+  location: string;
+  category: string;
+  imageUrl: string | null;
+  fundingTarget: number;
+  equityOffered: number;
+  raised: number;
+  investorCount: number;
+  percentFunded: number;
+}
+
+const NAV_ITEMS = [
+  { label: 'How It Works', href: '#how-it-works' },
+  { label: 'Businesses', href: '#businesses-seeking-funding' },
+  { label: 'For Investors', href: '#businesses-seeking-funding' },
+  { label: 'About', href: '#trust-section' },
+]
 
 const STATS = [
-  { value: '£2.4M', label: 'Total Funded' },
+  { value: '$2.4M', label: 'Total Funded' },
   { value: '147', label: 'Businesses Supported' },
   { value: '3,200+', label: 'Active Investors' },
   { value: '94%', label: 'Campaign Success Rate' },
@@ -17,7 +38,7 @@ const HOW_IT_WORKS_INVESTOR = [
   {
     step: '01',
     title: 'Browse Verified Businesses',
-    desc: 'Every listing on our platform has passed our background check and financial analysis process — no guesswork.',
+    desc: 'Every listing on our platform has passed our background check and financial analysis process.',
   },
   {
     step: '02',
@@ -46,48 +67,6 @@ const HOW_IT_WORKS_BUSINESS = [
     step: '03',
     title: 'Receive Funding',
     desc: 'Once your campaign is live, investors from the community can contribute and become stakeholders in your growth.',
-  },
-]
-
-const BUSINESSES = [
-  {
-    name: 'Baraka Bakehouse',
-    location: 'Birmingham, UK',
-    category: 'Food & Hospitality',
-    raised: 28400,
-    target: 40000,
-    investors: 84,
-    equity: '12%',
-    daysLeft: 18,
-    tag: 'Featured',
-    img: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&h=400&fit=crop&auto=format',
-    desc: 'An artisan halal bakery expanding to a second location in the city centre.',
-  },
-  {
-    name: 'Nour Tech Solutions',
-    location: 'London, UK',
-    category: 'Technology',
-    raised: 67500,
-    target: 80000,
-    investors: 132,
-    equity: '8%',
-    daysLeft: 9,
-    tag: 'Closing Soon',
-    img: 'https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=600&h=400&fit=crop&auto=format',
-    desc: 'SaaS platform helping small mosques manage memberships and community events.',
-  },
-  {
-    name: 'Ummah Threads',
-    location: 'Manchester, UK',
-    category: 'Fashion & Retail',
-    raised: 11200,
-    target: 35000,
-    investors: 47,
-    equity: '15%',
-    daysLeft: 34,
-    tag: 'New',
-    img: 'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=600&h=400&fit=crop&auto=format',
-    desc: 'Ethical modest fashion brand bringing premium quality to everyday Muslim wardrobes.',
   },
 ]
 
@@ -143,11 +122,27 @@ function TagBadge({ tag }: { tag: string }) {
   )
 }
 
-export function LandingPage({ auth }: { auth: LandingAuth }) {
+export function LandingPage({ auth, businesses }: { auth: LandingAuth; businesses: BusinessSummary[] }) {
+  const router = useRouter()
   const [activeTab, setActiveTab] = useState<'investor' | 'business'>('investor')
   const [mobileOpen, setMobileOpen] = useState(false)
 
   const steps = activeTab === 'investor' ? HOW_IT_WORKS_INVESTOR : HOW_IT_WORKS_BUSINESS
+
+  const handleListBusiness = () => {
+    if (!auth) {
+      router.push('/signup?role=business')
+      return
+    }
+
+    if (auth.dashboardPath === '/dashboard/business') {
+      router.push(auth.dashboardPath)
+      return
+    }
+
+    alert('Only business accounts can list a business. Redirecting you to create a business account.')
+    router.push('/signup?role=business')
+  }
 
   return (
     <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", backgroundColor: 'var(--background)', color: 'var(--foreground)', minHeight: '100%' }}>
@@ -163,13 +158,13 @@ export function LandingPage({ auth }: { auth: LandingAuth }) {
           </div>
 
           <ul className="hidden md:flex items-center gap-8">
-            {NAV_LINKS.map(link => (
-              <li key={link}>
-                <a href="#" style={{ color: 'var(--secondary)', fontSize: 14, fontWeight: 500, textDecoration: 'none', transition: 'color 0.15s' }}
+            {NAV_ITEMS.map(item => (
+              <li key={item.label}>
+                <a href={item.href} style={{ color: 'var(--secondary)', fontSize: 14, fontWeight: 500, textDecoration: 'none', transition: 'color 0.15s' }}
                   onMouseEnter={e => (e.currentTarget.style.color = '#fff')}
                   onMouseLeave={e => (e.currentTarget.style.color = 'var(--secondary)')}
                 >
-                  {link}
+                  {item.label}
                 </a>
               </li>
             ))}
@@ -181,7 +176,7 @@ export function LandingPage({ auth }: { auth: LandingAuth }) {
                 <span style={{ color: 'var(--secondary)', fontSize: 14, fontWeight: 500 }}>Hi, {auth.name}</span>
                 <a
                   href={auth.dashboardPath}
-                  className="transition-colors"
+                  className="bg-primary text-primary-foreground font-semibold px-4 py-2 rounded-lg text-sm no-underline hover:opacity-80 hover:bg-opacity-80 active:scale-[0.98] transition-all duration-150"
                   style={{ backgroundColor: 'var(--primary)', color: 'var(--primary-foreground)', fontSize: 14, fontWeight: 600, padding: '8px 18px', borderRadius: 10, textDecoration: 'none' }}
                 >
                   Go to Dashboard
@@ -189,10 +184,10 @@ export function LandingPage({ auth }: { auth: LandingAuth }) {
               </>
             ) : (
               <>
-                <a href="/login" style={{ color: 'var(--secondary)', fontSize: 14, fontWeight: 500, textDecoration: 'none' }}>Sign In</a>
+                <a href="/login" className="text-secondary text-sm font-medium no-underline hover:text-white hover:opacity-80 active:scale-[0.98] transition-all duration-150" style={{ color: 'var(--secondary)', fontSize: 14, fontWeight: 500, textDecoration: 'none' }}>Sign In</a>
                 <a
                   href="/signup"
-                  className="transition-colors"
+                  className="bg-primary text-primary-foreground font-semibold px-4 py-2 rounded-lg text-sm no-underline hover:opacity-90 active:scale-[0.98] transition-all duration-150"
                   style={{ backgroundColor: 'var(--primary)', color: 'var(--primary-foreground)', fontSize: 14, fontWeight: 600, padding: '8px 18px', borderRadius: 10, textDecoration: 'none' }}
                 >
                   Get Started
@@ -215,16 +210,16 @@ export function LandingPage({ auth }: { auth: LandingAuth }) {
         </nav>
 
         {mobileOpen && (
-          <div className="md:hidden px-6 pb-4 flex flex-col gap-3" style={{ backgroundColor: '#0e322f' }}>
-            {NAV_LINKS.map(link => (
-              <a key={link} href="#" style={{ color: 'var(--secondary)', fontSize: 14, fontWeight: 500, textDecoration: 'none', paddingTop: 4, paddingBottom: 4 }}>{link}</a>
+          <div className="md:hidden px-6 pb-4 flex flex-col gap-3" style={{ backgroundColor: 'var(--accent)' }}>
+            {NAV_ITEMS.map(item => (
+              <a key={item.label} href={item.href} style={{ color: 'var(--secondary)', fontSize: 14, fontWeight: 500, textDecoration: 'none', paddingTop: 4, paddingBottom: 4 }}>{item.label}</a>
             ))}
             {auth ? (
-              <a href={auth.dashboardPath} style={{ backgroundColor: 'var(--primary)', color: 'var(--primary-foreground)', fontSize: 14, fontWeight: 600, padding: '10px 18px', borderRadius: 10, textDecoration: 'none', textAlign: 'center', marginTop: 8 }}>
+              <a href={auth.dashboardPath} className="bg-primary text-primary-foreground font-semibold px-4 py-2 rounded-lg text-sm no-underline hover:opacity-80 hover:bg-opacity-80 active:scale-[0.98] transition-all duration-150" style={{ backgroundColor: 'var(--primary)', color: 'var(--primary-foreground)', fontSize: 14, fontWeight: 600, padding: '10px 18px', borderRadius: 10, textDecoration: 'none', textAlign: 'center', marginTop: 8 }}>
                 Go to Dashboard
               </a>
             ) : (
-              <a href="/signup" style={{ backgroundColor: 'var(--primary)', color: 'var(--primary-foreground)', fontSize: 14, fontWeight: 600, padding: '10px 18px', borderRadius: 10, textDecoration: 'none', textAlign: 'center', marginTop: 8 }}>
+              <a href="/signup" className="bg-primary text-primary-foreground font-semibold px-4 py-2 rounded-lg text-sm no-underline hover:opacity-90 active:scale-[0.98] transition-all duration-150" style={{ backgroundColor: 'var(--primary)', color: 'var(--primary-foreground)', fontSize: 14, fontWeight: 600, padding: '10px 18px', borderRadius: 10, textDecoration: 'none', textAlign: 'center', marginTop: 8 }}>
                 Get Started
               </a>
             )}
@@ -253,12 +248,17 @@ export function LandingPage({ auth }: { auth: LandingAuth }) {
               Asaan Fund connects investors with verified Muslim-owned SMEs seeking equity crowdfunding. No interest. No ambiguity. Just genuine partnership.
             </p>
             <div className="flex flex-wrap gap-4">
-              <a href="#" style={{ backgroundColor: 'var(--primary)', color: 'var(--primary-foreground)', fontWeight: 600, padding: '14px 28px', borderRadius: 10, fontSize: 14, textDecoration: 'none' }}>
+              <a href="#businesses-seeking-funding" className="bg-primary text-primary-foreground font-semibold px-7 py-3.5 rounded-lg text-sm no-underline text-center hover:scale-[1.03] hover:opacity-90 active:scale-[0.98] transition-all duration-150" style={{ backgroundColor: 'var(--primary)', color: 'var(--primary-foreground)', fontWeight: 600, padding: '14px 28px', borderRadius: 10, fontSize: 14, textDecoration: 'none' }}>
                 Start Investing
               </a>
-              <a href="#" style={{ border: '1px solid rgba(221,232,226,0.40)', color: 'var(--secondary)', fontWeight: 500, padding: '14px 28px', borderRadius: 10, fontSize: 14, textDecoration: 'none' }}>
+              <button
+                type="button"
+                onClick={handleListBusiness}
+                className="border border-secondary/40 text-secondary font-medium px-7 py-3.5 rounded-lg text-sm no-underline bg-transparent cursor-pointer hover:scale-[1.03] hover:bg-white/10 active:scale-[0.98] transition-all duration-150"
+                style={{ color: 'var(--secondary)', fontWeight: 500, padding: '14px 28px', borderRadius: 10, fontSize: 14, textDecoration: 'none', backgroundColor: 'transparent', cursor: 'pointer', fontFamily: 'inherit' }}
+              >
                 List Your Business
-              </a>
+              </button>
             </div>
           </div>
         </div>
@@ -279,7 +279,7 @@ export function LandingPage({ auth }: { auth: LandingAuth }) {
       </div>
 
       {/* HOW IT WORKS */}
-      <section style={{ paddingTop: 96, paddingBottom: 96, paddingLeft: 24, paddingRight: 24 }}>
+      <section id="how-it-works" className="scroll-mt-35" style={{ paddingTop: 96, paddingBottom: 96, paddingLeft: 24, paddingRight: 24 }}>
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6" style={{ marginBottom: 48 }}>
             <div>
@@ -325,7 +325,7 @@ export function LandingPage({ auth }: { auth: LandingAuth }) {
       </section>
 
       {/* LIVE CAMPAIGNS */}
-      <section style={{ paddingTop: 96, paddingBottom: 96, paddingLeft: 24, paddingRight: 24, backgroundColor: 'rgba(221,232,226,0.35)' }}>
+      <section id="businesses-seeking-funding" className="scroll-mt-16" style={{ paddingTop: 96, paddingBottom: 96, paddingLeft: 24, paddingRight: 24, backgroundColor: 'var(--muted)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4" style={{ marginBottom: 48 }}>
             <div>
@@ -334,25 +334,35 @@ export function LandingPage({ auth }: { auth: LandingAuth }) {
                 Businesses seeking funding
               </h2>
             </div>
-            <a href="#" style={{ color: 'var(--accent)', fontSize: 14, fontWeight: 600, textDecoration: 'underline', textUnderlineOffset: 4 }}>
+            <a href="/dashboard/investor" className="text-accent text-sm font-semibold underline underline-offset-4 hover:opacity-80 active:scale-[0.98] transition-all duration-150" style={{ color: 'var(--accent)', fontSize: 14, fontWeight: 600, textDecoration: 'underline', textUnderlineOffset: 4 }}>
               View all listings →
             </a>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
-            {BUSINESSES.map(biz => {
-              const pct = Math.round((biz.raised / biz.target) * 100)
+            {businesses.length === 0 ? (
+              <p style={{ color: 'var(--muted-foreground)', fontSize: 16, textAlign: 'center', gridColumn: '1 / -1', padding: 40 }}>
+                No businesses are currently seeking funding. Check back soon!
+              </p>
+            ) : businesses.map(biz => {
+              const tag = biz.percentFunded > 80 ? 'Closing Soon' : biz.percentFunded === 0 ? 'New' : 'Featured'
               return (
                 <div
-                  key={biz.name}
-                  style={{ backgroundColor: 'var(--card)', border: '1px solid var(--border)', borderRadius: 10, overflow: 'hidden', display: 'flex', flexDirection: 'column', transition: 'box-shadow 0.2s' }}
-                  onMouseEnter={e => (e.currentTarget.style.boxShadow = '0 4px 24px rgba(18,62,58,0.10)')}
-                  onMouseLeave={e => (e.currentTarget.style.boxShadow = 'none')}
+                  key={biz.id}
+                  style={{ backgroundColor: 'var(--card)', border: '1px solid var(--border)', borderRadius: 10, overflow: 'hidden', display: 'flex', flexDirection: 'column', transition: 'box-shadow 0.2s, transform 0.15s' }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.boxShadow = '0 8px 30px rgba(0,0,0,0.3)'
+                    e.currentTarget.style.transform = 'translateY(-2px)'
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.boxShadow = 'none'
+                    e.currentTarget.style.transform = 'translateY(0)'
+                  }}
                 >
-                  <div style={{ position: 'relative', height: 176, backgroundColor: 'var(--muted)' }}>
-                    <img src={biz.img} alt={biz.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <div style={{ position: 'relative', height: 200, backgroundColor: 'var(--muted)' }}>
+                    <img src={biz.imageUrl ?? 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&h=400&fit=crop&auto=format'} alt={biz.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     <div style={{ position: 'absolute', top: 12, left: 12 }}>
-                      <TagBadge tag={biz.tag} />
+                      <TagBadge tag={tag} />
                     </div>
                   </div>
 
@@ -362,28 +372,28 @@ export function LandingPage({ auth }: { auth: LandingAuth }) {
                       <span style={{ fontSize: 11, color: 'var(--muted-foreground)', whiteSpace: 'nowrap' }}>{biz.location}</span>
                     </div>
                     <span style={{ fontSize: 11, color: 'var(--primary)', fontWeight: 600, marginBottom: 12 }}>{biz.category}</span>
-                    <p style={{ fontSize: 13, color: 'var(--muted-foreground)', lineHeight: 1.6, marginBottom: 16, flex: 1 }}>{biz.desc}</p>
+                    <p style={{ fontSize: 13, color: 'var(--muted-foreground)', lineHeight: 1.6, marginBottom: 16, flex: 1, minHeight: 62 }}>{biz.tagline}</p>
 
-                    <ProgressBar raised={biz.raised} target={biz.target} />
+                    <ProgressBar raised={biz.raised} target={biz.fundingTarget} />
 
                     <div className="grid grid-cols-3 gap-2 text-center" style={{ marginTop: 12, marginBottom: 20 }}>
                       <div>
-                        <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--foreground)', fontVariantNumeric: 'tabular-nums' }}>£{biz.raised.toLocaleString()}</div>
+                        <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--foreground)', fontVariantNumeric: 'tabular-nums' }}>${biz.raised.toLocaleString()}</div>
                         <div style={{ fontSize: 11, color: 'var(--muted-foreground)' }}>raised</div>
                       </div>
                       <div>
-                        <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--foreground)', fontVariantNumeric: 'tabular-nums' }}>{pct}%</div>
+                        <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--foreground)', fontVariantNumeric: 'tabular-nums' }}>{biz.percentFunded}%</div>
                         <div style={{ fontSize: 11, color: 'var(--muted-foreground)' }}>of goal</div>
                       </div>
                       <div>
-                        <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--foreground)', fontVariantNumeric: 'tabular-nums' }}>{biz.daysLeft}d</div>
-                        <div style={{ fontSize: 11, color: 'var(--muted-foreground)' }}>remaining</div>
+                        <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--foreground)', fontVariantNumeric: 'tabular-nums' }}>{biz.investorCount}</div>
+                        <div style={{ fontSize: 11, color: 'var(--muted-foreground)' }}>investors</div>
                       </div>
                     </div>
 
                     <div className="flex items-center justify-between">
-                      <span style={{ fontSize: 11, color: 'var(--muted-foreground)' }}>{biz.investors} investors · {biz.equity} equity</span>
-                      <a href="#" style={{ backgroundColor: 'var(--primary)', color: 'var(--primary-foreground)', fontSize: 12, fontWeight: 600, padding: '7px 16px', borderRadius: 8, textDecoration: 'none' }}>
+                      <span style={{ fontSize: 11, color: 'var(--muted-foreground)' }}>{biz.equityOffered}% equity offered</span>
+                      <a href={`/invest/${biz.id}`} className="bg-primary text-primary-foreground font-semibold text-xs px-4 py-1.5 rounded-lg no-underline text-center hover:opacity-90 active:scale-[0.98] transition-all duration-150" style={{ backgroundColor: 'var(--primary)', color: 'var(--primary-foreground)', fontSize: 12, fontWeight: 600, padding: '7px 16px', borderRadius: 8, textDecoration: 'none' }}>
                         Invest Now
                       </a>
                     </div>
@@ -396,7 +406,7 @@ export function LandingPage({ auth }: { auth: LandingAuth }) {
       </section>
 
       {/* WHY TRUST US */}
-      <section style={{ paddingTop: 96, paddingBottom: 96, paddingLeft: 24, paddingRight: 24 }}>
+      <section id="trust-section" className="scroll-mt-16" style={{ paddingTop: 96, paddingBottom: 96, paddingLeft: 24, paddingRight: 24 }}>
         <div className="max-w-6xl mx-auto">
           <div style={{ marginBottom: 48 }}>
             <p style={{ color: 'var(--primary)', fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 12 }}>Why Asaan Fund</p>
@@ -420,62 +430,74 @@ export function LandingPage({ auth }: { auth: LandingAuth }) {
       </section>
 
       {/* CTA BANNER */}
-      <section style={{ backgroundColor: 'var(--accent)', paddingTop: 80, paddingBottom: 80, paddingLeft: 24, paddingRight: 24 }}>
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
-          <div>
-            <h2 style={{ color: 'var(--accent-foreground)', fontSize: 'clamp(28px, 4vw, 38px)', fontWeight: 800, letterSpacing: '-0.03em', lineHeight: 1.15, marginBottom: 12 }}>
+      <section className="bg-linear-to-b from-[#FAF8F5] via-neutral-950 to-black pt-20 pb-16 px-6 relative">
+        <div className="max-w-6xl mx-auto rounded-2xl bg-neutral-900/90 border border-neutral-800 p-8 md:p-12 relative overflow-hidden shadow-2xl backdrop-blur-md">
+          <div className="absolute -right-12 -bottom-12 w-64 h-64 bg-(--primary)/10 rounded-full blur-3xl pointer-events-none" />
+
+          <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-8">
+            <div className="max-w-xl">
+              <h2 className="text-white text-2xl md:text-3xl font-bold tracking-tight mb-3">
               Ready to back a Muslim business?
-            </h2>
-            <p style={{ color: 'var(--secondary)', fontSize: 15, maxWidth: 480, lineHeight: 1.6 }}>
-              Join thousands of investors growing wealth the halal way — sharing in the success of real businesses, not charging interest.
-            </p>
-          </div>
-          <div className="flex flex-col sm:flex-row gap-3" style={{ flexShrink: 0 }}>
-              <a href="#" style={{ backgroundColor: 'var(--primary)', color: 'var(--primary-foreground)', fontWeight: 600, padding: '14px 28px', borderRadius: 10, fontSize: 14, textDecoration: 'none', textAlign: 'center' }}>
-              Browse Businesses
-            </a>
-              <a href="#" style={{ border: '1px solid rgba(221,232,226,0.40)', color: 'var(--secondary)', fontWeight: 500, padding: '14px 28px', borderRadius: 10, fontSize: 14, textDecoration: 'none', textAlign: 'center' }}>
-              List Your Business
-            </a>
+              </h2>
+              <p className="text-neutral-400 text-sm leading-relaxed">
+                Join thousands of investors growing wealth the halal way — sharing in the success of real businesses, not charging interest.
+              </p>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-3 shrink-0">
+              <Button href="#businesses-seeking-funding" variant="primary">
+                Browse Businesses
+              </Button>
+              <Button onClick={handleListBusiness} variant="outline">
+                List Your Business
+              </Button>
+            </div>
           </div>
         </div>
       </section>
 
       {/* FOOTER */}
-      <footer style={{ backgroundColor: '#0e322f', paddingTop: 48, paddingBottom: 48, paddingLeft: 24, paddingRight: 24 }}>
+      <footer className="bg-black pt-8 pb-16 px-6 border-t border-neutral-900 text-sm">
         <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8" style={{ marginBottom: 40 }}>
-            <div className="col-span-2 md:col-span-1">
-              <div className="flex items-center gap-2" style={{ marginBottom: 16 }}>
-                <div className="flex items-center justify-center rounded-md" style={{ width: 24, height: 24, backgroundColor: 'var(--primary)' }}>
-                  <span style={{ color: 'white', fontSize: 10, fontWeight: 800 }}>A</span>
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-10 pb-12 border-b border-neutral-900">
+            <div className="md:col-span-2 pr-0 md:pr-8">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-6 h-6 flex items-center justify-center rounded-md bg-primary">
+                  <span className="text-black text-xs font-black">A</span>
                 </div>
-                <span style={{ color: 'var(--accent-foreground)', fontWeight: 700, fontSize: 15 }}>Asaan Fund</span>
+                <span className="text-white font-bold text-base tracking-tight">Asaan Fund</span>
               </div>
-              <p style={{ color: 'rgba(221,232,226,0.65)', fontSize: 13, lineHeight: 1.6 }}>
-                Halal equity crowdfunding for Muslim-owned small and medium businesses.
+              <p className="text-neutral-400 text-xs leading-relaxed max-w-sm">
+                Halal equity crowdfunding for Muslim-owned small and medium businesses. Connecting ethical capital with growing ventures.
               </p>
             </div>
+
             {[
               { title: 'Platform', links: ['Browse Businesses', 'How It Works', 'Pricing', 'For Investors'] },
               { title: 'Company', links: ['About Us', 'Shariah Compliance', 'Legal', 'Contact'] },
               { title: 'Resources', links: ['Blog', 'FAQ', 'Investor Guide', 'Business Guide'] },
             ].map(col => (
               <div key={col.title}>
-                <h4 style={{ color: 'var(--accent-foreground)', fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 16 }}>{col.title}</h4>
-                <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
+                <h4 className="text-white text-xs font-semibold tracking-wider uppercase mb-4">
+                  {col.title}
+                </h4>
+                <ul className="space-y-2.5">
                   {col.links.map(l => (
                     <li key={l}>
-                      <a href="#" style={{ color: 'rgba(221,232,226,0.65)', fontSize: 13, textDecoration: 'none' }}>{l}</a>
+                      <a href="#" className="text-neutral-400 hover:text-white text-xs transition-colors duration-150">
+                        {l}
+                      </a>
                     </li>
                   ))}
                 </ul>
               </div>
             ))}
           </div>
-          <div className="flex flex-col md:flex-row items-center justify-between gap-3" style={{ borderTop: '1px solid rgba(221,232,226,0.10)', paddingTop: 24 }}>
-            <p style={{ color: 'rgba(221,232,226,0.45)', fontSize: 12 }}>© 2026 Asaan Fund. All rights reserved.</p>
-            <p style={{ color: 'rgba(221,232,226,0.45)', fontSize: 12 }}>Investments involve risk. Capital at risk. Not financial advice.</p>
+
+          <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-500">
+            <p>© 2026 Asaan Fund. All rights reserved.</p>
+            <p className="text-neutral-500 sm:text-right">
+              Investments involve risk. Capital at risk. Not financial advice.
+            </p>
           </div>
         </div>
       </footer>

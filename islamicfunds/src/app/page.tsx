@@ -1,11 +1,13 @@
 import { verifySession, getCurrentUser, dashboardPathForRole } from "@/lib/dal";
 import { LandingPage, type LandingAuth } from "@/app/ui/landing-page";
+import { getPublicBusinesses } from "@/lib/dto";
 
 // Server component: reads the session so the landing page can reflect the
 // logged-in state (a "Go to Dashboard" link) instead of always showing the
 // signed-out nav. Visiting "/" no longer appears to log the user out.
 export default async function Home() {
   const session = await verifySession();
+  const businesses = await getPublicBusinesses();
 
   let auth: LandingAuth = null;
   if (session) {
@@ -16,5 +18,5 @@ export default async function Home() {
     };
   }
 
-  return <LandingPage auth={auth} />;
+  return <LandingPage auth={auth} businesses={businesses} />;
 }

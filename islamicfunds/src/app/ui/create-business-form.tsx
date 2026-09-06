@@ -80,7 +80,7 @@ export function CreateBusinessForm({ onSuccess }: { onSuccess: () => void }) {
       <Field label="Description" name="description" textarea />
       <Field label="Location" name="location" />
       <Field label="Category" name="category" />
-      <Field label="Funding target (£)" name="fundingTarget" type="number" />
+      <Field label="Funding target (CAD $)" name="fundingTarget" type="number" />
       <Field label="Equity offered (%)" name="equityOffered" type="number" step="0.1" />
 
       <div>

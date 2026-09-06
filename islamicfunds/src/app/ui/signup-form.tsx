@@ -9,9 +9,13 @@ import {
   submitStyle,
 } from "./auth-shell";
 
-export function SignupForm() {
+export function SignupForm({
+  initialRole = "investor",
+}: {
+  initialRole?: "investor" | "business";
+}) {
   const [state, action, pending] = useActionState(signup, undefined);
-  const [role, setRole] = useState<"investor" | "business">("investor");
+  const [role, setRole] = useState<"investor" | "business">(initialRole);
 
   return (
     <form action={action} className="flex flex-col gap-4">
