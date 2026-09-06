@@ -55,5 +55,4 @@ export type FormState =
 export type SessionPayload = {
   userId: string;
   role: Role;
-  expiresAt: Date;
 };

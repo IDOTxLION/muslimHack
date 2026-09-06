@@ -16,6 +16,7 @@
   --color-accent-foreground: var(--accent-foreground);
   --color-border: var(--border);
   --color-ring: var(--ring);
+  --color-destructive: var(--destructive);
   --radius-default: var(--radius);
 }
 
@@ -34,6 +35,7 @@
   --accent-foreground: #F8F4EC;
   --border: #D4CEBE;
   --ring: #7e6719;
+  --destructive: #B23B2E;
   --radius: 10px;
 }
 /* Smooth fade from dark hero to light section */

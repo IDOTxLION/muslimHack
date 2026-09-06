@@ -1,6 +1,7 @@
 import { requireRole, getCurrentUser } from "@/lib/dal";
 import { db } from "@/lib/db";
 import { DashboardShell } from "@/app/ui/dashboard-header";
+import { rejectBusiness, verifyBusiness } from "@/app/actions/business";
 
 export default async function AdminDashboard() {
   // Only the company (admin role) can reach this page.
@@ -28,7 +29,7 @@ export default async function AdminDashboard() {
       <h1 style={{ fontSize: 28, fontWeight: 800, letterSpacing: "-0.02em" }}>
         Company overview
       </h1>
-      <p style={{ color: "#5C6B64", marginTop: 6, marginBottom: 24 }}>
+      <p style={{ color: "var(--muted-foreground)", marginTop: 6, marginBottom: 24 }}>
         Verify businesses, review financials, and monitor platform activity.
       </p>
 
@@ -44,18 +45,19 @@ export default async function AdminDashboard() {
       </h2>
       <div
         style={{
-          backgroundColor: "white",
-          border: "1px solid #D4CEBE",
+          backgroundColor: "var(--card)",
+          border: "1px solid var(--border)",
           borderRadius: 12,
           overflow: "hidden",
         }}
       >
         <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
           <thead>
-            <tr style={{ backgroundColor: "#F1EDE2", textAlign: "left" }}>
+            <tr style={{ backgroundColor: "var(--muted)", textAlign: "left" }}>
               <Th>Business</Th>
               <Th>Owner</Th>
               <Th>Status</Th>
+              <Th>Verification</Th>
               <Th>Target</Th>
               <Th>Raised</Th>
               <Th>Revenue*</Th>
@@ -65,16 +67,44 @@ export default async function AdminDashboard() {
             {businesses.map((b) => {
               const raised = b.investments.reduce((s, i) => s + i.amount, 0);
               return (
-                <tr key={b.id} style={{ borderTop: "1px solid #EEE9DF" }}>
+                <tr key={b.id} style={{ borderTop: "1px solid var(--muted)" }}>
                   <Td>
                     <strong>{b.name}</strong>
-                    <div style={{ color: "#5C6B64" }}>{b.category}</div>
+                    <div style={{ color: "var(--muted-foreground)" }}>{b.category}</div>
                   </Td>
                   <Td>
                     {b.owner.name}
-                    <div style={{ color: "#5C6B64" }}>{b.owner.email}</div>
+                    <div style={{ color: "var(--muted-foreground)" }}>{b.owner.email}</div>
                   </Td>
                   <Td>{b.status}</Td>
+                  <Td>
+                    {b.verificationNotes ? (
+                      <details>
+                        <summary style={{ cursor: "pointer", color: "var(--accent)", fontWeight: 600 }}>
+                          View document
+                        </summary>
+                        <p style={{ marginTop: 6, whiteSpace: "pre-wrap", maxWidth: 260 }}>
+                          {b.verificationNotes}
+                        </p>
+                      </details>
+                    ) : (
+                      "—"
+                    )}
+                    {b.status === "pending" && (
+                      <div className="flex gap-2" style={{ marginTop: 8 }}>
+                        <form action={verifyBusiness.bind(null, b.id)}>
+                          <button type="submit" style={{ fontSize: 12, fontWeight: 700, color: "var(--accent)", border: "1px solid var(--accent)", borderRadius: 6, padding: "4px 10px" }}>
+                            Approve
+                          </button>
+                        </form>
+                        <form action={rejectBusiness.bind(null, b.id)}>
+                          <button type="submit" style={{ fontSize: 12, fontWeight: 700, color: "var(--destructive, #B23B2E)", border: "1px solid var(--destructive, #B23B2E)", borderRadius: 6, padding: "4px 10px" }}>
+                            Reject
+                          </button>
+                        </form>
+                      </div>
+                    )}
+                  </Td>
                   <Td>£{b.fundingTarget.toLocaleString()}</Td>
                   <Td>£{raised.toLocaleString()}</Td>
                   <Td>
@@ -88,7 +118,7 @@ export default async function AdminDashboard() {
           </tbody>
         </table>
       </div>
-      <p style={{ fontSize: 11, color: "#5C6B64", marginTop: 10 }}>
+      <p style={{ fontSize: 11, color: "var(--muted-foreground)", marginTop: 10 }}>
         * Admins can view private financial data as part of the verification
         process; investors never see these figures.
       </p>
@@ -100,21 +130,21 @@ function MetricCard({ label, value }: { label: string; value: string }) {
   return (
     <div
       style={{
-        backgroundColor: "white",
-        border: "1px solid #D4CEBE",
+        backgroundColor: "var(--card)",
+        border: "1px solid var(--border)",
         borderRadius: 12,
         padding: 20,
       }}
     >
-      <div style={{ fontSize: 24, fontWeight: 800, color: "#123E3A" }}>{value}</div>
-      <div style={{ fontSize: 12, color: "#5C6B64", marginTop: 4 }}>{label}</div>
+      <div style={{ fontSize: 24, fontWeight: 800, color: "var(--accent)" }}>{value}</div>
+      <div style={{ fontSize: 12, color: "var(--muted-foreground)", marginTop: 4 }}>{label}</div>
     </div>
   );
 }
 
 function Th({ children }: { children: React.ReactNode }) {
   return (
-    <th style={{ padding: "10px 14px", fontWeight: 700, color: "#5C6B64" }}>
+    <th style={{ padding: "10px 14px", fontWeight: 700, color: "var(--muted-foreground)" }}>
       {children}
     </th>
   );

@@ -7,8 +7,8 @@ export function LogoutButton() {
       <button
         type="submit"
         style={{
-          border: "1px solid rgba(221,232,226,0.4)",
-          color: "#DDE8E2",
+          border: "1px solid color-mix(in srgb, var(--secondary) 40%, transparent)",
+          color: "var(--secondary)",
           backgroundColor: "transparent",
           fontSize: 13,
           fontWeight: 600,

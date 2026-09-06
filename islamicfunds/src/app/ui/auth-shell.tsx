@@ -31,7 +31,7 @@ export function AuthShell({
             <span style={{ color: "white", fontSize: 11, fontWeight: 800 }}>A</span>
           </div>
           <span style={{ color: "#123E3A", fontWeight: 700, fontSize: 18 }}>
-            Amal Fund
+            Asaan Fund
           </span>
         </Link>
 

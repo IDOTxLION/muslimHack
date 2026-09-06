@@ -10,7 +10,7 @@ const ROLE_LABEL: Record<Role, string> = {
 
 export function DashboardHeader({ name, role }: { name: string; role: Role }) {
   return (
-    <header style={{ backgroundColor: "#123E3A", position: "sticky", top: 0, zIndex: 50 }}>
+    <header style={{ backgroundColor: "var(--accent)", position: "sticky", top: 0, zIndex: 50 }}>
       <nav
         className="max-w-6xl mx-auto px-6 flex items-center justify-between"
         style={{ height: 64 }}
@@ -18,19 +18,19 @@ export function DashboardHeader({ name, role }: { name: string; role: Role }) {
         <Link href="/" className="flex items-center gap-2" style={{ textDecoration: "none" }}>
           <div
             className="flex items-center justify-center rounded-md"
-            style={{ width: 28, height: 28, backgroundColor: "#D86F52" }}
+            style={{ width: 28, height: 28, backgroundColor: "var(--primary)" }}
           >
             <span style={{ color: "white", fontSize: 11, fontWeight: 800 }}>A</span>
           </div>
-          <span style={{ color: "#F8F4EC", fontWeight: 700, fontSize: 18 }}>Amal Fund</span>
+          <span style={{ color: "var(--accent-foreground)", fontWeight: 700, fontSize: 18 }}>Asaan Fund</span>
         </Link>
 
         <div className="flex items-center gap-4">
           <div className="hidden sm:flex flex-col items-end">
-            <span style={{ color: "#F8F4EC", fontSize: 13, fontWeight: 600 }}>{name}</span>
+            <span style={{ color: "var(--accent-foreground)", fontSize: 13, fontWeight: 600 }}>{name}</span>
             <span
               style={{
-                color: "#DDE8E2",
+                color: "var(--secondary)",
                 fontSize: 11,
                 textTransform: "uppercase",
                 letterSpacing: "0.08em",
@@ -56,7 +56,7 @@ export function DashboardShell({
   children: React.ReactNode;
 }) {
   return (
-    <div style={{ minHeight: "100%", backgroundColor: "#F8F4EC", color: "#202927" }}>
+    <div style={{ minHeight: "100%", backgroundColor: "var(--background)", color: "var(--foreground)" }}>
       <DashboardHeader name={name} role={role} />
       <main className="max-w-6xl mx-auto px-6 py-10">{children}</main>
     </div>
