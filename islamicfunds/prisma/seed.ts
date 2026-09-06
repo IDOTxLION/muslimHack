@@ -2,7 +2,7 @@ import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
 import bcrypt from "bcryptjs";
 import { PrismaClient } from "../generated/prisma/client.ts";
 
-const adapter = new PrismaBetterSqlite3({ url: "file:./dev.db" });
+const adapter = new PrismaBetterSqlite3({ url: "file:./prisma/dev.db" });
 const db = new PrismaClient({ adapter });
 
 const PASSWORD = "Password123";
