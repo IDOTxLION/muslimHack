@@ -28,10 +28,10 @@ const NAV_ITEMS = [
 ]
 
 const STATS = [
-  { value: '$2.4M', label: 'Total Funded' },
-  { value: '147', label: 'Businesses Supported' },
-  { value: '3,200+', label: 'Active Investors' },
-  { value: '94%', label: 'Campaign Success Rate' },
+  { value: '$20k', label: 'Total Funded' },
+  { value: '3', label: 'Businesses Supported' },
+  { value: '5+', label: 'Active Investors' },
+  { value: '99.9%', label: 'Campaign Success Rate' },
 ]
 
 const HOW_IT_WORKS_INVESTOR = [
@@ -315,7 +315,23 @@ export function LandingPage({ auth, businesses }: { auth: LandingAuth; businesse
           <div className="grid md:grid-cols-3 gap-6">
             {steps.map(item => (
               <div key={item.step} style={{ backgroundColor: 'var(--card)', border: '1px solid var(--border)', borderRadius: 10, padding: 28 }}>
-                <div style={{ fontSize: 48, fontWeight: 800, color: 'var(--secondary)', marginBottom: 20, lineHeight: 1, fontVariantNumeric: 'tabular-nums' }}>{item.step}</div>
+                <div
+                  style={{
+                    width: 48,
+                    height: 48,
+                    borderRadius: 10,
+                    backgroundColor: 'var(--primary)',
+                    color: 'white',
+                    fontSize: 18,
+                    fontWeight: 800,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginBottom: 20,
+                  }}
+                >
+                  {item.step}
+                </div>
                 <h3 style={{ fontSize: 16, fontWeight: 700, color: 'var(--foreground)', marginBottom: 10 }}>{item.title}</h3>
                 <p style={{ fontSize: 14, color: 'var(--muted-foreground)', lineHeight: 1.65 }}>{item.desc}</p>
               </div>

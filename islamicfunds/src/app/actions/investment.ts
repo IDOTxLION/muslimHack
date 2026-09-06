@@ -52,5 +52,5 @@ export async function invest(
 
   revalidatePath("/dashboard/investor");
   revalidatePath(`/invest/${businessId}`);
-  redirect(`/invest/${businessId}?success=1`);
+  redirect(`/invest/${businessId}?success=1&amount=${amount}`);
 }

@@ -21,18 +21,19 @@ export async function getPublicBusinesses() {
       equityOffered: true,
       deadline: true,
       status: true,
-      investments: { select: { amount: true } },
+      investments: { select: { amount: true, investorId: true } },
     },
   });
 
   return businesses.map((b) => {
     const raised = b.investments.reduce((sum, i) => sum + i.amount, 0);
+    const uniqueInvestors = new Set(b.investments.map((i) => i.investorId)).size;
     const { investments: _investments, ...rest } = b;
     void _investments;
     return {
       ...rest,
       raised,
-      investorCount: b.investments.length,
+      investorCount: uniqueInvestors,
       percentFunded: b.fundingTarget
         ? Math.min(Math.round((raised / b.fundingTarget) * 100), 100)
         : 0,
@@ -55,7 +56,7 @@ export async function getPublicBusinessById(id: string) {
       fundingTarget: true,
       equityOffered: true,
       status: true,
-      investments: { select: { amount: true } },
+      investments: { select: { amount: true, investorId: true } },
     },
   });
 
@@ -64,13 +65,16 @@ export async function getPublicBusinessById(id: string) {
   }
 
   const raised = business.investments.reduce((sum, i) => sum + i.amount, 0);
+  const uniqueInvestors = new Set(
+    business.investments.map((i) => i.investorId),
+  ).size;
   const { investments: _investments, ...rest } = business;
   void _investments;
 
   return {
     ...rest,
     raised,
-    investorCount: business.investments.length,
+    investorCount: uniqueInvestors,
     percentFunded: business.fundingTarget
       ? Math.min(Math.round((raised / business.fundingTarget) * 100), 100)
       : 0,
