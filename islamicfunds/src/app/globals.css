@@ -21,22 +21,32 @@
 
 :root {
   --background: #F8F4EC;
-  --foreground: #202927;
+  --foreground: #0c0c0c;
   --card: #FFFFFF;
-  --card-foreground: #202927;
-  --primary: #D86F52;
+  --card-foreground: #0a231e;
+  --primary: #D4AF37;
   --primary-foreground: #FFFFFF;
   --secondary: #DDE8E2;
-  --secondary-foreground: #202927;
+  --secondary-foreground: #060606;
   --muted: #EEE9DF;
   --muted-foreground: #5C6B64;
-  --accent: #123E3A;
+  --accent: #000000;
   --accent-foreground: #F8F4EC;
   --border: #D4CEBE;
-  --ring: #D86F52;
+  --ring: #7e6719;
   --radius: 10px;
 }
-
+/* Smooth fade from dark hero to light section */
+.hero-transition {
+  height: 180px;
+  background: linear-gradient(
+    to bottom,
+    var(--accent) 0%,
+    color-mix(in oklch, var(--accent) 70%, var(--background)) 45%,
+    color-mix(in oklch, var(--accent) 20%, var(--background)) 80%,
+    var(--background) 100%
+  );
+}
 html, body, #root {
   height: 100%;
 }
@@ -45,6 +55,13 @@ body {
   font-family: 'Plus Jakarta Sans', sans-serif;
   background-color: var(--background);
   color: var(--foreground);
+}
+
+.hero-section {
+  min-height: calc(100svh - 64px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .tabular-nums {
